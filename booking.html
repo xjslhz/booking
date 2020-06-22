@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./font/iconfont.css">
+    <!-- <link rel="stylesheet" href="./index.css"> -->
+    <style>
+        /* 公共样式 */
+        .clearfix:after {
+            content: "";
+            display: block;
+            visibility: hidden;
+            height: 0;
+            clear: both;
+        }
+        ul{
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .fl{
+            float: left;
+        }
+        .fr{
+            float: right;
+        }
+        .warp{
+            float: left;
+            width: 320px;
+            height: 540px;
+            border: 1px solid #cccccc;
+            box-shadow: 1px 1px 1px 1px gray;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        .warp .title{
+            padding: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+
+        }
+        .box{
+            padding: 15px 0px 0px 0px;
+            background: #fff;
+            margin: 10px;
+            border-radius: 10px;
+
+        }
+        .box .title-box{
+            width: 100px;
+            height: 24px;
+            border-radius: 14px;
+            border:1px solid #fedb5b;
+            font-size: 14px;
+            margin: 0 auto;
+        }
+        .box .title-box .income{
+            width: 50px;
+            height: 24px;
+            line-height: 24px;
+            text-align: center;
+            /* background:#fedb5b; */
+            border-radius: 14px 0px 0px 14px;
+            cursor: pointer;
+        }
+        .box .title-box .pay{
+            width: 50px;
+            height: 24px;
+            line-height: 24px;
+            text-align: center;
+            border-radius: 0px 14px 14px 0px;
+            cursor: pointer;
+        }
+        .box .list-box{
+            margin: 10px 0px;
+        }
+        .box .list-box ul{
+            display: flex;
+            /* 换行 */
+            flex-wrap: wrap;
+        }
+        .box .list-box ul li{
+            margin: 10px;
+            cursor: pointer;
+        }
+        .box .list-box ul li .icon{
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #fb990f;
+            text-align: center;
+            line-height: 40px;
+        }
+        .box .list-box ul li .icon i{
+            font-size: 20px;
+            /* font-weight: bold; */
+            color: #fff;
+        }
+        .box .list-box ul li .text{
+            font-size: 12px;
+            color: #767676;
+            text-align: center;
+            padding: 4px 0px;
+
+        }
+        /* 账户选择 */
+        .account{
+            background: #fff;
+            margin: 10px;
+            border-radius: 10px;
+        }
+        .account .account-text{
+            padding: 10px 10px;
+            border-bottom: 1px solid #f2f2f2;
+        }
+        .account .choice ul{
+            display: flex;
+        }
+
+        .account .choice ul li{
+            padding: 4px 10px;
+            /* background: #e8e8e8; */
+            border-radius: 14px;
+            font-size: 12px;
+            margin: 10px 4px;
+            cursor: pointer;
+
+        }
+
+        
+        /* 操作 */
+        .operation{
+            padding: 15px 0px 0px 0px;
+            background: #fff;
+            margin: 10px;
+            border-radius: 10px;
+        }
+        .operation .operation-box{
+            padding: 0px 10px 10px 0px;
+        }
+        .operation .operation-box span{
+            font-size: 14px;
+            color: #484545;
+            padding-right: 20px;
+            padding-left: 10px;
+        }
+        .operation .operation-box input{
+            border: none;
+            outline: none;
+        }
+        .btn{
+            padding: 5px;
+            background: #fff;
+            margin: 10px;
+            border-radius: 10px;
+            text-align: center;
+            background-color: #fdda5a;
+            cursor: pointer;
+        }
+         /* 点击激活状态 */
+         .active{
+            background: #fedb5b;
+        }
+
+        /* 数据 */
+        .data{
+            float: left;
+            width: 320px;
+            height: 60px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            background-color: hotpink;
+            margin-left: 20px;
+        }
+        .data ul li .icon{
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+            border-radius: 50%;
+            background: khaki;
+            margin: 10px;
+        }
+        .data ul li .middle{
+            margin: 10px;
+        }
+        .data ul li .data-price{
+            margin: 20px 10px 15px 0px;
+        }
+        .font{
+            color: #e4393c;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- 视图 V views -->
+    <div id='app'>
+        <div class="warp">
+            <div class="title">记账本</div>
+            <div class="box">
+                <div class="title-box clearfix">
+                    <div class="income fl" :class='{active:isIncome}' @click='cut'>收入</div>
+                    <div class="pay fl" :class='{active:isPay}' @click='cutOut'>支出</div>
+                </div>
+                <div class="list-box">
+                    <ul>
+                        <li v-for="(item,i) in list" :key='i'>
+                            <div class="icon"><i class="iconfont" :class='item.icon' @click='getIcon(i)'></i></div>
+                            <div class="text">{{item.title}}</div>
+                        </li>
+                       
+                    </ul>
+                </div>
+
+            </div>
+            <div class="account">
+                <div class="account-text">账户选择</div>
+                <div class="choice">
+                    <ul>  
+                        <li v-for="(item,i) in account" :key='i'  :class="{active:item.isHas}" @click="add(item)">{{item.text}}</li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="operation">
+                 <div class="operation-box"><!-- @input='iptime' -->
+                    <span>日期</span><input type="text" placeholder="请选择日期" v-model='time' @change='iptTime'>
+                </div>
+                <div class="operation-box">
+                    <span>金额</span><input type="text" placeholder="输入金额" v-model='price' @change='iptPrice'>
+                </div>
+                <div class="operation-box">
+                    <span>备注</span><input type="text" placeholder="输入备注" v-model='remarks' @change='iptRemarks'>
+                </div>
+            </div>
+            <div class="btn" @click='btn'>保存</div>
+        </div>
+        <div class="data" v-show='isBtn'>
+            <ul>
+                <!-- <li v-for='(item,k) in types':key='k'>{{item.time}}--{{item.price}}--{{item.remarks}}</li> -->
+                <li>
+                    <div class="icon fl"><i class="iconfont" :class='{icon:isData}'></i></div>
+                    <div class="middle fl">
+                        <div class="way-box">
+                            <span>微信</span>
+                            <span>{{time}}</span>
+                        </div>
+                        <div class="way-bottom">{{remarks}}</div>
+                    </div>
+                    <div class="data-price fr" :class='{font:isData}'>￥{{price}}</div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- 调度者 MV ViewModel  -->
+    <script src='./vue.js'></script>
+  
+    
+    <!-- 模型 M Model -->
+    <script>
+        var vm = new Vue({
+            el:'#app',
+            data:{  
+                list:[
+                    { icon:'icon-92',title:'餐饮'},
+                    { icon:'icon-gouwu',title:'购物'},
+                    { icon:'icon-chuhang',title:'出行'},
+                    { icon:'icon-jiankang',title:'健康'},
+                    { icon:'icon-wenhuayule',title:'娱乐'},
+                    { icon:'icon-zhufang',title:'住房'},
+                    { icon:'icon-jiaotong',title:'交通'},
+                    { icon:'icon-collection',title:'人情'},
+                    { icon:'icon-xuexi',title:'学习'},
+                    { icon:'icon-qita',title:'其他'},
+                ],
+                // 账户选择
+                account:[
+                    {text:'现金',isHas:true},
+                    {text:'支付宝',isHas:false},
+                    {text:'微信',isHas:false},
+                    {text:'信用卡',isHas:false},
+                    {text:'储蓄卡',isHas:false},
+                ],
+                time:"",
+                price:'',
+                remarks:'',
+                icon:'',
+                way:'',
+                income:'',
+                isData:true,
+                isBtn:false,
+                isIncome:true,
+                isPay:false,
+                types:[],
+            
+            },
+            methods:{
+                //点击切换背景颜色
+                add(item){
+
+                    console.log(item);
+                    if(item.isHas){
+                        return ;
+                    }
+                    for(let i = 0 ; i<this.account.length ; i++){
+                        if(this.account[i].isHas){
+                            this.account[i].isHas=false;
+                            break ;
+                        }
+
+                    }
+                    item.isHas =true;
+                    // this.types.push({way:this.account[i].text});
+                },
+                //切换头部
+                cut(){
+                    this.isIncome=true;
+                    this.isPay=false;
+
+                    this.types.push({income:this.income});
+
+                },
+                cutOut(){
+                    this.isIncome=false;
+                    this.isPay=true;
+                },
+                //点击显示
+                btn(){
+                    this.isBtn=true;
+                    // if(income){
+                    //     this.isData=true;
+                    // }
+                },
+
+                //获取数据
+                iptTime(){
+                    
+                   this.types.push({time:this.time});
+                  
+                },
+                iptPrice(){
+                    this.price = parseInt(this.price);
+                    
+                   this.types.push({price:this.price}) ; 
+                },
+                iptRemarks(){
+                   this.types.push({remarks:this.remarks}) ; 
+                },
+                getIcon(i){
+                    this.types.push({icon:this.list[i].icon});
+                    console.log(this.list[i].icon);
+                    
+                }
+            }
+        })
+    </script>
+</body>
+</html>
